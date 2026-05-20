@@ -18,11 +18,14 @@ public class APIController {
     private HttpRequest request;
     private HttpResponse<String> response;
     private String url;
-    private final String api = "RGAPI-REMOVED";
+    private final String api = buscarApiKey();
+    //Ricardo 04 puuid = uioXWpIm56UeWTHtBI6jiA_pPgsQD_j64iO4jIB7jbqjr43LCWdBW_i-EFureRjmmO2IufFoRdCgjg
+
 
     public Invocador obtenerPuuidYDevolverInvocador(String nameGame, String tagLine){
         Gson gson = new Gson();
         nameGame = nameGame.replace(" ", "%20");
+     // url = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/Ricardo%2004/TAG?api_key=APIKEY";
         url = "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + nameGame + "/" + tagLine + "?api_key=" + api;
         try {
             client = HttpClient.newHttpClient();
@@ -39,7 +42,7 @@ public class APIController {
     }
 
     public void conseguirRango(String puuid) {
-        // url = "https://euw1.api.riotgames.com/lol/league/v4/entries/by-puuid/uioXWpIm56UeWTHtBI6jiA_pPgsQD_j64iO4jIB7jbqjr43LCWdBW_i-EFureRjmmO2IufFoRdCgjg?api_key=RGAPI-REMOVED";
+     // url = "https://euw1.api.riotgames.com/lol/league/v4/entries/by-puuid/uioXWpIm56UeWTHtBI6jiA_pPgsQD_j64iO4jIB7jbqjr43LCWdBW_i-EFureRjmmO2IufFoRdCgjg?api_key=APIKEY";
         url = "https://euw1.api.riotgames.com/lol/league/v4/entries/by-puuid/" + puuid + "?api_key=" + api;
         Gson gson = new Gson();
         try {
@@ -84,7 +87,7 @@ public class APIController {
     }
 
     public void obtenerChampionByID(long championID) {
-        //url = "https://ddragon.leagueoflegends.com/cdn/16.5.1/data/es_ES/champion.json";
+      //url = "https://ddragon.leagueoflegends.com/cdn/16.5.1/data/es_ES/champion.json";
         url = "https://ddragon.leagueoflegends.com/cdn/" + obtenerVersionMasReciente() + "/data/es_ES/champion.json";
         try {
             client = HttpClient.newHttpClient();
@@ -114,7 +117,7 @@ public class APIController {
         url = "https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/" + puuid + "?api_key=" + api;
         Gson gson = new Gson();
         https:
-//euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/uioXWpIm56UeWTHtBI6jiA_pPgsQD_j64iO4jIB7jbqjr43LCWdBW_i-EFureRjmmO2IufFoRdCgjg/top?api_key=RGAPI-REMOVED
+        //euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/uioXWpIm56UeWTHtBI6jiA_pPgsQD_j64iO4jIB7jbqjr43LCWdBW_i-EFureRjmmO2IufFoRdCgjg/top?api_key=RGAPI-REMOVED
         try {
             client = HttpClient.newHttpClient();
             request = HttpRequest.newBuilder().GET().uri(URI.create(url)).build();
@@ -130,12 +133,10 @@ public class APIController {
             System.out.println("ERROR EN LA PETICION HTTTP");
         }
     }
-
-    public void guardarVariableChampionIDyMaestria() {
-
-    }*/
+    */
 
     public void imprimir3Mains(String puuid) {
+     // url = "https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/uioXWpIm56UeWTHtBI6jiA_pPgsQD_j64iO4jIB7jbqjr43LCWdBW_i-EFureRjmmO2IufFoRdCgjg/top?api_key=APIKEY";
         url = "https://euw1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/" + puuid + "/top?api_key=" + api;
         Gson gson = new Gson();
         try {
@@ -158,6 +159,7 @@ public class APIController {
     }
 
     private String obtenerUltimaPartida(String puuid) {
+     // url = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/uioXWpIm56UeWTHtBI6jiA_pPgsQD_j64iO4jIB7jbqjr43LCWdBW_i-EFureRjmmO2IufFoRdCgjg/ids?start=0&count=1&api_key=APIKEY";
         url = "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/" + puuid + "/ids?start=0&count=1&api_key=" + api;
         try {
             client = HttpClient.newHttpClient();
@@ -172,6 +174,7 @@ public class APIController {
     }
 
     public void verUltimaPartida(String puuid) {
+     // url = "https://europe.api.riotgames.com/lol/match/v5/matches/EUW1_ID_DE_PARTIDA?api_key=APIKEY";
         url = "https://europe.api.riotgames.com/lol/match/v5/matches/" + obtenerUltimaPartida(puuid) + "?api_key=" + api;
         int posicionArrayPartida = 0;
         Gson gson = new Gson();
@@ -206,11 +209,22 @@ public class APIController {
             } else {
                 resultado = "DERROTA";
             }
-            System.out.println("ULTIMA PARTIDA: " + invocador.getChampionName() + " CLINICO (" + invocador.getKills() + "/" + invocador.getDeaths() + "/" + invocador.getAssists() + ") " + resultado + " el " + fechaReal);
+            System.out.println("ULTIMA PARTIDA CLINICA: " + invocador.getChampionName() + " (" + invocador.getKills() + "/" + invocador.getDeaths() + "/" + invocador.getAssists() + ") " + resultado + " el " + fechaReal);
         } catch (Exception e) {
             System.out.println("ERROR EN LA PETICION HTTP (verUltimaPartida)");
         }
     }
+
+    private String buscarApiKey() {
+    java.util.Properties propiedades = new java.util.Properties();
+    try (java.io.FileInputStream entrada = new java.io.FileInputStream("config.properties")) {
+        propiedades.load(entrada);
+        return propiedades.getProperty("riot.api.key");
+    } catch (java.io.IOException e) {
+        System.out.println("¡Error! No se pudo leer config.properties: " + e.getMessage());
+        return null;
+    }
+}
 
     public void closeClient(){
         client.close();
