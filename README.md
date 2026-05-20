@@ -35,28 +35,34 @@ Asegúrate de tener instalado:
    ```bash
    git clone [https://github.com/RicardoMatosR/API_LOL.git](https://github.com/RicardoMatosR/API_LOL.git)
    cd API_LOL
-Configurar las credenciales secretas:
-El proyecto incluye un archivo de plantilla llamado config.properties.example. Debes crear una copia de este archivo en la raíz del proyecto llamada exactamente config.properties:
+   ```
 
-Bash
-cp config.properties.example config.properties
-Añadir tu API Key:
-Abre el nuevo archivo config.properties con tu editor de texto favorito e introduce tu clave de desarrollo de Riot Games:
+2. **Configurar las credenciales secretas:**
+   El proyecto incluye un archivo de plantilla llamado `config.properties.example`. Debes crear una copia de este archivo en la raíz del proyecto llamada exactamente `config.properties`:
+   ```bash
+   cp config.properties.example config.properties
+   ```
 
-Properties
-riot.api.key=RGAPI-TU-CLAVE-PERSONAL-AQUI
-Nota: El archivo config.properties está incluido en el .gitignore, por lo que tus claves nunca se subirán a GitHub por error.
+3. **Añadir tu API Key:**
+   Abre el nuevo archivo `config.properties` con tu editor de texto favorito e introduce tu clave de desarrollo de Riot Games:
+   ```properties
+   riot.api.key=RGAPI-TU-CLAVE-PERSONAL-AQUI
+   ```
+   *Nota: El archivo `config.properties` está incluido en el `.gitignore`, por lo que tus claves nunca se subirán a GitHub por error.*
 
-Compilar el proyecto:
+4. **Compilar el proyecto:**
+   ```bash
+   mvn clean compile
+   ```
 
-Bash
-mvn clean compile
-Ejecutar la aplicación:
+5. **Ejecutar la aplicación:**
+   ```bash
+   mvn exec:java -Dexec.mainClass="Main"
+   ```
 
-Bash
-mvn exec:java -Dexec.mainClass="Main"
-📁 Estructura del Proyecto
-Plaintext
+## 📁 Estructura del Proyecto
+
+```text
 API_LOL/
 │
 ├── src/
@@ -76,3 +82,4 @@ API_LOL/
 ├── config.properties.example                # Plantilla pública de configuración
 ├── .gitignore                               # Filtro de archivos para Git (Protege config.properties)
 └── pom.xml                                  # Configuración de Maven y dependencias del proyecto
+```
