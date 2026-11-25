@@ -15,8 +15,11 @@ public class Main {
             System.out.println("5. Salir");
             System.out.print("Elige una opción: ");
 
-            opcion = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                opcion = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                opcion = 0; // no es un número: cae en "Opción no contemplada"
+            }
 
             switch (opcion) {
                 case 1:
@@ -40,10 +43,11 @@ public class Main {
 
                 case 4:
                     System.out.println("Exportando datos");
-                    gestor.exportarYSalir();
+                    gestor.exportarLista();
                     break;
 
                 case 5:
+                    gestor.cerrar();
                     System.out.println("SALIENDO...");
                     break;
 
@@ -55,4 +59,4 @@ public class Main {
 
         scanner.close();
     }
-}
+}

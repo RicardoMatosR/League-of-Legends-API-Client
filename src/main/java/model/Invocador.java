@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @lombok.Data
 public class Invocador implements Serializable {

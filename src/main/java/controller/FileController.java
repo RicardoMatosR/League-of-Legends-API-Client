@@ -6,42 +6,24 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class FileController {
-    ObjectOutputStream objectOutputStream;
-    ObjectInputStream objectInputStream;
+    private static final String RUTA = "src/main/java/resources/listaImportarExportar.obj";
 
-    public void exportarLista(ArrayList<Invocador> invocadores){
-        try {
-            objectOutputStream = new ObjectOutputStream(new FileOutputStream("src/main/java/resources/listaImportarExportar.obj"));
-            objectOutputStream.writeObject(invocadores);
+    // try-with-resources cierra el fichero siempre, aunque haya error
+    public void exportarLista(ArrayList<Invocador> invocadores) {
+        try (ObjectOutputStream salida = new ObjectOutputStream(new FileOutputStream(RUTA))) {
+            salida.writeObject(invocadores);
         } catch (IOException e) {
-            System.out.println("Ruta de creacion incorrecta");
-        } finally {
-            try {
-                objectOutputStream.close();
-            } catch (IOException e) {
-                System.out.println("Error en el cerrado");
-            }
+            System.out.println("No se pudo guardar la lista: " + e.getMessage());
         }
     }
 
-    public ArrayList<Invocador> importarLista(){
-        ArrayList<Invocador> invocadores = new ArrayList<>();
-        try {
-            objectInputStream = new ObjectInputStream(new FileInputStream("src/main/java/resources/listaImportarExportar.obj"));
-            invocadores = (ArrayList<Invocador>) objectInputStream.readObject();
-        } catch (IOException e) {
-            System.out.println("Error en ruta");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Error al no encontrar la clase");
-        } finally {
-            try {
-                if (objectInputStream != null){
-                    objectInputStream.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Error cerrando archivo al importar");
-            }
+    @SuppressWarnings("unchecked")
+    public ArrayList<Invocador> importarLista() {
+        try (ObjectInputStream entrada = new ObjectInputStream(new FileInputStream(RUTA))) {
+            return (ArrayList<Invocador>) entrada.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("No se pudo leer la lista: " + e.getMessage());
+            return new ArrayList<>();
         }
-        return invocadores;
     }
 }

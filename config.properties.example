@@ -1,0 +1,4 @@
+# Copia este fichero como config.properties (está en el .gitignore) y pon tu key de Riot.
+# Consíguela en https://developer.riotgames.com (las de desarrollo caducan cada 24 horas).
+# También puedes usar la variable de entorno RIOT_API_KEY en lugar de este fichero.
+riot.api.key=RGAPI-pon-aqui-tu-clave

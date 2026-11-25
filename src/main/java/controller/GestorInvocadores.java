@@ -46,9 +46,13 @@ public class GestorInvocadores {
         System.out.println("Datos importados");
     }
 
-    public void exportarYSalir() {
+    public void exportarLista() {
         fileController.exportarLista(invocadores);
-        System.out.println(" Datos guardados");
+        System.out.println("Datos guardados");
+    }
+
+    // Se llama al salir: cierra el HttpClient (antes se cerraba al exportar y las búsquedas posteriores fallaban)
+    public void cerrar() {
         apiController.closeClient();
     }
 }

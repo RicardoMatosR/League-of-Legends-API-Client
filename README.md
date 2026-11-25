@@ -12,7 +12,7 @@ Una aplicación robusta en Java que interactúa con la **Riot Games API** para e
 
 ## 🛠️ Tecnologías Utilizadas
 
-- **Lenguaje:** Java (Compatible con Java 11/17/21)
+- **Lenguaje:** Java (Java 21 o superior)
 - **Gestor de Proyectos:** Maven
 - **Cliente HTTP:** `java.net.http.HttpClient` (Nativo de Java para peticiones asíncronas/síncronas)
 - **Procesamiento JSON:** - [Google GSON](https://github.com/google/gson) (Para mapeo directo a objetos/modelos)
@@ -21,49 +21,54 @@ Una aplicación robusta en Java que interactúa con la **Riot Games API** para e
 
 ## ⚙️ Configuración e Instalación
 
-Para proteger la integridad de las credenciales, la clave de la API de Riot no está hardcodeada en el código fuente y se encuentra protegida a través del sistema de exclusión de Git.
+La API key de Riot **nunca está en el código**. Se lee de la variable de entorno `RIOT_API_KEY` o, si no existe, del fichero `config.properties`, que está en el `.gitignore`.
 
 ### Prerrequisitos
 
-Asegúrate de tener instalado:
-- JDK 11 o superior
+- JDK 21 o superior
 - Maven
+- Una API key de desarrollo de [Riot Developer Portal](https://developer.riotgames.com) (caduca cada 24 horas)
 
-### Pasos para el Setup local
+### Pasos
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/RicardoMatosR/API_LOL.git](https://github.com/RicardoMatosR/API_LOL.git)
-   cd API_LOL
+   git clone https://github.com/RicardoMatosR/League-of-Legends-API-Client.git
+   cd League-of-Legends-API-Client
    ```
 
-2. **Configurar las credenciales secretas:**
-   El proyecto incluye un archivo de plantilla llamado `config.properties.example`. Debes crear una copia de este archivo en la raíz del proyecto llamada exactamente `config.properties`:
+2. **Poner tu API key** (elige una opción):
+
+   - Variable de entorno:
+     ```bash
+     # Linux / macOS
+     export RIOT_API_KEY=RGAPI-tu-clave
+     # Windows PowerShell
+     $env:RIOT_API_KEY="RGAPI-tu-clave"
+     ```
+   - O fichero de configuración:
+     ```bash
+     cp config.properties.example config.properties
+     ```
+     y escribe tu clave en `riot.api.key`.
+
+3. **Ejecutar:**
    ```bash
-   cp config.properties.example config.properties
+   mvn compile exec:java
    ```
 
-3. **Añadir tu API Key:**
-   Abre el nuevo archivo `config.properties` con tu editor de texto favorito e introduce tu clave de desarrollo de Riot Games:
-   ```properties
-   riot.api.key=RGAPI-TU-CLAVE-PERSONAL-AQUI
-   ```
-   *Nota: El archivo `config.properties` está incluido en el `.gitignore`, por lo que tus claves nunca se subirán a GitHub por error.*
+## 🔒 Cómo se hacen las peticiones
 
-4. **Compilar el proyecto:**
-   ```bash
-   mvn clean compile
-   ```
-
-5. **Ejecutar la aplicación:**
-   ```bash
-   mvn exec:java -Dexec.mainClass="Main"
-   ```
+- **Un solo `HttpClient`** para toda la app, con *timeouts*.
+- La key viaja en la **cabecera `X-Riot-Token`**, no en la URL, para que no quede guardada en logs.
+- Se comprueba el **código de estado** antes de leer el JSON: 401/403 (key caducada), 404 (jugador no encontrado) y 429 (límite de peticiones, con el tiempo de espera que indica Riot).
+- El nombre y el tag se codifican con `URLEncoder`.
+- La lista de campeones de Data Dragon se descarga **una sola vez** y se guarda en memoria.
 
 ## 📁 Estructura del Proyecto
 
 ```text
-API_LOL/
+League-of-Legends-API-Client/
 │
 ├── src/
 │   └── main/
